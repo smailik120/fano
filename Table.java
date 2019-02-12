@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Table extends ArrayList<Pair<Character, Integer>> {
 	public void sort() {
 		for(int i = 0; i < this.size(); i++) {
-			for(int j = i + 1; j < this.size() - 1; j++) {
+			for(int j = i; j < this.size(); j++) {
 				if (this.get(j).getSecond().compareTo(this.get(i).getSecond()) == 1) {
 					Pair<Character, Integer> temp = this.get(j);
 					this.set(j, this.get(i));
