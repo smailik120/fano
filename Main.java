@@ -72,7 +72,7 @@ public class Main {
 		Map<Character, StringBuffer> map = new TreeMap<Character, StringBuffer>();
 		Map<Character, StringBuffer> unzippedMap = new TreeMap<Character, StringBuffer>();
 		ArrayList<Character> text = new ArrayList<Character>();
-		try(FileReader reader = new FileReader("C:\\test\\fano.txt"))
+		try(FileReader reader = new FileReader(sc.nextLine()))
 	    {
 	        int c;
 	        while((c=reader.read())!=-1) {
@@ -98,24 +98,31 @@ public class Main {
 		while(!stack.isEmpty()) {
 			Table tab = stack.pop();
 			int separateIndex = tab.separate();
-			Table first = tab.getTable(0, separateIndex);
-			Table second = tab.getTable(separateIndex + 1, tab.size() - 1);
+			Table first = new Table();
+			Table second = new Table();
+			if(tab.size() >= 2) {
+				first = tab.getTable(0, separateIndex);
+				second = tab.getTable(separateIndex + 1, tab.size() - 1);
+			}
+			if(tab.size() == 1) {
+				map.put(tab.get(0).getFirst(), map.get(tab.get(0).getFirst()).append("0"));
+			}
 			for (int i = 0; i < first.size(); i++) {
 				map.put(first.get(i).getFirst(), map.get(first.get(i).getFirst()).append("0"));
 			}
 			for (int i = 0; i < second.size(); i++) {
 				map.put(second.get(i).getFirst(), map.get(second.get(i).getFirst()).append("1"));
 			}
-			if (first.size() != 1) {
+			if (first.size() > 1) {
 				stack.push(first);
 			}
-			if (second.size() != 1) {
+			if (second.size() > 1) {
 				stack.push(second);
 			}
 		}
 		System.out.println("please enter path to outputfile");
 		System.out.println(map.toString());
-		try(BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream("C:\\test\\output.txt")))
+		try(BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(sc.nextLine())))
         {
 			 ArrayList<StringBuffer> str = new ArrayList<StringBuffer>();
 			writer.write(map.size());
@@ -174,7 +181,7 @@ public class Main {
         }
 		
 		try(DataInputStream reader = new DataInputStream(new FileInputStream("C:\\test\\output.txt"))) {
-			System.out.println(reader.available());
+			//System.out.println(reader.available());
 			Byte ch;
 			ArrayList<Integer> list = new ArrayList<Integer>();
 			int lenMainString = 0;
@@ -207,13 +214,13 @@ public class Main {
 		        	zeroCounter = 0;
 	        	}
 	        	counter++;
-	        	System.out.println(ch & 0xFF);
+	        	//System.out.println(ch & 0xFF);
 	        }
 	        reader.close();
 	        numberSymbols = convertToInt(new StringBuffer(mainString.substring(mainString.length() - 8)));
 	        lenMainString = mainString.length();
 	        StringBuffer current = new StringBuffer("");
-	        System.out.println(mainString.toString());
+	        //System.out.println(mainString.toString());
 	        for (int i = 0; i < lenMainString - 1; i++) {
 	        	current.append(mainString.charAt(i));
 	        	if (symbCounter / 3 < lenTable) {
@@ -246,6 +253,7 @@ public class Main {
 	        		}
 	        	}
 	        }
+	       // System.out.println(unzippedMap.toString());
 	     }
 		 catch(IOException ex){
 	            System.out.println(ex.getMessage());
