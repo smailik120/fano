@@ -79,6 +79,7 @@ public class Main {
 			String choose;
 			choose = sc.next();
 			if (choose.equals("1")) {
+				// поиск смысла жизни ...
 				Table table = new Table();
 				ArrayList<Character> input = new ArrayList<Character>();
 				Stack<Table> stack = new Stack<Table>();
@@ -92,6 +93,10 @@ public class Main {
 					pathRead = sc.next();
 				}
 				FileReader reader = new FileReader(pathRead);
+				System.out.println("please enter path to outputfile");
+				String pathWrite = sc.next();
+				BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(pathWrite));
+				long start = System.currentTimeMillis();
 				int c;
 				while ((c = reader.read()) != -1) {
 					s = (char) c;
@@ -134,9 +139,6 @@ public class Main {
 						stack.push(second);
 					}
 				}
-				System.out.println(map.toString());
-				System.out.println("please enter path to outputfile");
-				BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(sc.next()));
 				ArrayList<StringBuffer> str = new ArrayList<StringBuffer>();
 				writer.write(map.size());
 				for (Character key : map.keySet()) {
@@ -171,7 +173,6 @@ public class Main {
 					str.add(bit);
 					str.add(len);
 					str.add(code);
-					System.out.println("pres" + bit + " " + len + " " + code);
 				} // write table
 				ArrayList<Character> array;
 				for (int i = 0; i < text.size(); i++) {
@@ -183,6 +184,13 @@ public class Main {
 				}
 				writer.flush();
 				writer.close();
+				long finish = System.currentTimeMillis() - start;
+				double time = (double) finish/1000;
+				long sizeInput = new File(pathRead).length();
+				System.out.println("time execute for zipping=" + time + "seconds");
+				System.out.println("size input file = " + new File(pathRead).length() + "bytes");
+				System.out.println("size output file = " + new File(pathWrite).length() + "bytes");
+				System.out.println("speed coding bytes in second = " + sizeInput / time);
 			} else if (choose.equals("2")) {
 				System.out.println("please enter path to input file for unzipping");
 				String pathRead = sc.next();
@@ -191,6 +199,10 @@ public class Main {
 					pathRead = sc.next();
 				}
 				DataInputStream reader = new DataInputStream(new FileInputStream(pathRead));
+				System.out.println("please enter output file for unzipping");
+				String pathWrite = sc.next();
+				BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(pathWrite));
+				long start = System.currentTimeMillis();
 				Byte ch;
 				int lenMainString = 0;
 				int lenTable = 0;
@@ -223,8 +235,6 @@ public class Main {
 					counter++;
 				}
 				reader.close();
-				System.out.println("please enter output file for unzipping");
-				BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(sc.next()));
 				numberSymbols = convertToInt(new StringBuffer(mainString.substring(mainString.length() - 8)));
 				lenMainString = mainString.length();
 				StringBuffer current = new StringBuffer("");
@@ -259,6 +269,13 @@ public class Main {
 					}
 				}
 				writer.close();
+				long finish = System.currentTimeMillis() - start;
+				double time = (double) finish/1000;
+				long sizeInput = new File(pathRead).length();
+				System.out.println("time execute for zipping=" + time + "seconds");
+				System.out.println("size input file = " + new File(pathRead).length() + "bytes");
+				System.out.println("size output file = " + new File(pathWrite).length() + "bytes");
+				System.out.println("speed coding bytes in second = " + sizeInput / time);
 			} else {
 				System.out.println("sorry but your try is not success, please enter 1 or 2");
 			}
