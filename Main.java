@@ -110,9 +110,6 @@ public class Main {
 					}
 				}
 				table.sort();
-				for (int index = 0; index < table.size(); index++) {
-					System.out.println(table.get(index).getFirst() + " " + table.get(index).getSecond());
-				}
 				stack.push(table);
 				while (!stack.isEmpty()) {
 					Table tab = stack.pop();
@@ -185,7 +182,7 @@ public class Main {
 				writer.flush();
 				writer.close();
 				long finish = System.currentTimeMillis() - start;
-				double time = (double) finish/1000;
+				double time = (double) finish / 1000;
 				long sizeInput = new File(pathRead).length();
 				System.out.println("time execute for zipping=" + time + "seconds");
 				System.out.println("size input file = " + new File(pathRead).length() + "bytes");
@@ -245,9 +242,7 @@ public class Main {
 							currentSymbol = (char) convertToInt(current);
 							current = new StringBuffer("");
 							symbCounter++;
-						}
-
-						else if (current.length() % 8 == 0 && symbCounter % 3 == 1) {
+						} else if (current.length() % 8 == 0 && symbCounter % 3 == 1) {
 							codeLen = convertToInt(current);
 							current = new StringBuffer("");
 							symbCounter++;
@@ -270,7 +265,7 @@ public class Main {
 				}
 				writer.close();
 				long finish = System.currentTimeMillis() - start;
-				double time = (double) finish/1000;
+				double time = (double) finish / 1000;
 				long sizeInput = new File(pathRead).length();
 				System.out.println("time execute for zipping=" + time + "seconds");
 				System.out.println("size input file = " + new File(pathRead).length() + "bytes");
