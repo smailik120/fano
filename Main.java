@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,6 +98,10 @@ public class Main {
 				FileReader reader = new FileReader(pathRead);
 				System.out.println("please enter path to outputfile");
 				String pathWrite = sc.next();
+				Path path = Paths.get(pathWrite);
+				while (!Files.exists(path)) {
+					pathWrite = sc.next();
+				}
 				BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(pathWrite));
 				long start = System.currentTimeMillis();
 				int c;
@@ -198,6 +205,10 @@ public class Main {
 				DataInputStream reader = new DataInputStream(new FileInputStream(pathRead));
 				System.out.println("please enter output file for unzipping");
 				String pathWrite = sc.next();
+				Path path = Paths.get(pathWrite);
+				while (!Files.exists(path)) {
+					pathWrite = sc.next();
+				}
 				BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(pathWrite));
 				long start = System.currentTimeMillis();
 				Byte ch;
