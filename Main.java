@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
@@ -73,13 +74,12 @@ public class Main {
 
 	public static void main(String args[]) throws IOException {
 		Scanner sc = new Scanner(System.in);
-		Map<Character, StringBuffer> unzippedMap = new TreeMap<Character, StringBuffer>();
+		Map<String, Character> unzippedMap = new HashMap<String, Character>();
 		while (true) {
 			System.out.println("please enter 1 if you want zip or enter 2 if you want unzip");
 			String choose;
 			choose = sc.next();
 			if (choose.equals("1")) {
-				// поиск смысла жизни ...
 				Table table = new Table();
 				ArrayList<Character> input = new ArrayList<Character>();
 				Stack<Table> stack = new Stack<Table>();
@@ -137,7 +137,7 @@ public class Main {
 					}
 				}
 				ArrayList<StringBuffer> str = new ArrayList<StringBuffer>();
-				writer.write(map.size());
+				writer.write(map.size());//size table
 				for (Character key : map.keySet()) {
 					StringBuffer bit;
 					StringBuffer pres = map.get(key);
@@ -210,8 +210,8 @@ public class Main {
 				int symbCounter = 0;
 				int numberSymbols = 0;
 				int counterSymbols = 0;
+				StringBuffer lastByte = new StringBuffer();
 				StringBuffer mainString = new StringBuffer("");
-				StringBuffer tableBit = new StringBuffer("");
 				while (reader.available() > 0) {
 					ch = reader.readByte();
 					if (counter == 0) {
@@ -219,7 +219,6 @@ public class Main {
 					} else {
 						int cur = ch & 0xFF;
 						StringBuffer temp = convertToBitString(cur);
-						tableBit.append(convertToBitString(cur));
 						StringBuffer zeroString = new StringBuffer("");
 						while (temp.length() + zeroCounter < 8) {
 							zeroCounter++;
@@ -228,11 +227,12 @@ public class Main {
 						temp = zeroString.append(temp);
 						mainString.append(temp);
 						zeroCounter = 0;
+						lastByte = temp;
 					}
 					counter++;
 				}
 				reader.close();
-				numberSymbols = convertToInt(new StringBuffer(mainString.substring(mainString.length() - 8)));
+				numberSymbols = convertToInt(new StringBuffer(lastByte.toString()));
 				lenMainString = mainString.length();
 				StringBuffer current = new StringBuffer("");
 				for (int i = 0; i < lenMainString - numberSymbols - 8; i++) {
@@ -247,27 +247,24 @@ public class Main {
 							current = new StringBuffer("");
 							symbCounter++;
 						} else if (symbCounter % 3 == 2 && current.length() == codeLen && codeLen != 0) {
-							unzippedMap.put(currentSymbol, current);
+							unzippedMap.put(current.toString(), currentSymbol);
 							current = new StringBuffer("");
 							symbCounter++;
 							codeLen = 0;
 						}
 					} else {
-						for (Character t : unzippedMap.keySet()) {
-							if (unzippedMap.get(t).toString().equals(current.toString())) {
-								writer.write(t);
+						if(unzippedMap.get(current.toString()) != null) {
+								writer.write(unzippedMap.get(current.toString()));
 								current = new StringBuffer("");
 								counterSymbols++;
-								break;
 							}
 						}
 					}
-				}
 				writer.close();
 				long finish = System.currentTimeMillis() - start;
 				double time = (double) finish / 1000;
 				long sizeInput = new File(pathRead).length();
-				System.out.println("time execute for zipping=" + time + "seconds");
+				System.out.println("time execute for unzipping=" + time + "seconds");
 				System.out.println("size input file = " + new File(pathRead).length() + "bytes");
 				System.out.println("size output file = " + new File(pathWrite).length() + "bytes");
 				System.out.println("speed coding bytes in second = " + sizeInput / time);
