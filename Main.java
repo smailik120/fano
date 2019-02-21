@@ -271,6 +271,7 @@ public class Main {
 							}
 						}
 					}
+				writer.flush();
 				writer.close();
 				long finish = System.currentTimeMillis() - start;
 				double time = (double) finish / 1000;
